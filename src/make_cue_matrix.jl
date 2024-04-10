@@ -469,7 +469,7 @@ function make_ngrams(
     sep_token,
     start_end_token,
 )
-    if !start_end_token == ""
+    if start_end_token != ""
         push!(pushfirst!(tokens, start_end_token), start_end_token)
     end
 
