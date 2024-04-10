@@ -19,9 +19,9 @@ struct Cue_Matrix_Struct
     gold_ind::Vector{Vector{Int64}}
     A::SparseMatrixCSC
     grams::Int64
-    target_col::Union{Symbol, String}
+    target_col::Union{Symbol,String}
     tokenized::Bool
-    sep_token::Union{String, Nothing}
+    sep_token::Union{String,Nothing}
     keep_sep::Bool
     start_end_token::String
 end
@@ -88,13 +88,13 @@ cue_obj_train = JudiLing.make_cue_matrix(
 """
 function make_cue_matrix(
     data::DataFrame;
-    grams = 3,
-    target_col = :Words,
-    tokenized = false,
-    sep_token = nothing,
-    keep_sep = false,
-    start_end_token = "#",
-    verbose = false,
+    grams=3,
+    target_col=:Words,
+    tokenized=false,
+    sep_token=nothing,
+    keep_sep=false,
+    start_end_token="#",
+    verbose=false,
 )
 
     # split tokens from words or other columns
@@ -225,13 +225,13 @@ cue_obj_val = JudiLing.make_cue_matrix(
 function make_cue_matrix(
     data::DataFrame,
     cue_obj::Cue_Matrix_Struct;
-    grams = 3,
-    target_col = "Words",
-    tokenized = false,
-    sep_token = nothing,
-    keep_sep = false,
-    start_end_token = "#",
-    verbose = false,
+    grams=3,
+    target_col="Words",
+    tokenized=false,
+    sep_token=nothing,
+    keep_sep=false,
+    start_end_token="#",
+    verbose=false,
 )
 
     # split tokens from words or other columns
@@ -320,36 +320,36 @@ cue_obj_train, cue_obj_val = JudiLing.make_cue_matrix(
 function make_cue_matrix(
     data_train::DataFrame,
     data_val::DataFrame;
-    grams = 3,
-    target_col = "Words",
-    tokenized = false,
-    sep_token = nothing,
-    keep_sep = false,
-    start_end_token = "#",
-    verbose = false,
+    grams=3,
+    target_col="Words",
+    tokenized=false,
+    sep_token=nothing,
+    keep_sep=false,
+    start_end_token="#",
+    verbose=false,
 )
 
     cue_obj_train = make_cue_matrix(
         data_train,
-        grams = grams,
-        target_col = target_col,
-        tokenized = tokenized,
-        sep_token = sep_token,
-        keep_sep = keep_sep,
-        start_end_token = start_end_token,
-        verbose = verbose,
+        grams=grams,
+        target_col=target_col,
+        tokenized=tokenized,
+        sep_token=sep_token,
+        keep_sep=keep_sep,
+        start_end_token=start_end_token,
+        verbose=verbose,
     )
 
     cue_obj_val = make_cue_matrix(
         data_val,
         cue_obj_train,
-        grams = grams,
-        target_col = target_col,
-        tokenized = tokenized,
-        sep_token = sep_token,
-        keep_sep = keep_sep,
-        start_end_token = start_end_token,
-        verbose = verbose,
+        grams=grams,
+        target_col=target_col,
+        tokenized=tokenized,
+        sep_token=sep_token,
+        keep_sep=keep_sep,
+        start_end_token=start_end_token,
+        verbose=verbose,
     )
 
     cue_obj_train, cue_obj_val
@@ -402,56 +402,56 @@ cue_obj_train, cue_obj_val = JudiLing.make_combined_cue_matrix(
 function make_combined_cue_matrix(
     data_train,
     data_val;
-    grams = 3,
-    target_col = "Words",
-    tokenized = false,
-    sep_token = nothing,
-    keep_sep = false,
-    start_end_token = "#",
-    verbose = false,
+    grams=3,
+    target_col="Words",
+    tokenized=false,
+    sep_token=nothing,
+    keep_sep=false,
+    start_end_token="#",
+    verbose=false,
 )
 
     data_combined = copy(data_train)
     data_val = copy(data_val)
     for col in names(data_combined)
-        data_combined[!, col] = inlinestring2string.(data_combined[!,col])
-        data_val[!, col] = inlinestring2string.(data_val[!,col])
+        data_combined[!, col] = inlinestring2string.(data_combined[!, col])
+        data_val[!, col] = inlinestring2string.(data_val[!, col])
     end
     append!(data_combined, data_val, promote=true)
 
     cue_obj_combined = make_cue_matrix(
         data_combined,
-        grams = grams,
-        target_col = target_col,
-        tokenized = tokenized,
-        sep_token = sep_token,
-        keep_sep = keep_sep,
-        start_end_token = start_end_token,
-        verbose = verbose,
+        grams=grams,
+        target_col=target_col,
+        tokenized=tokenized,
+        sep_token=sep_token,
+        keep_sep=keep_sep,
+        start_end_token=start_end_token,
+        verbose=verbose,
     )
 
     cue_obj_train = make_cue_matrix(
         data_train,
         cue_obj_combined,
-        grams = grams,
-        target_col = target_col,
-        tokenized = tokenized,
-        sep_token = sep_token,
-        keep_sep = keep_sep,
-        start_end_token = start_end_token,
-        verbose = verbose,
+        grams=grams,
+        target_col=target_col,
+        tokenized=tokenized,
+        sep_token=sep_token,
+        keep_sep=keep_sep,
+        start_end_token=start_end_token,
+        verbose=verbose,
     )
 
     cue_obj_val = make_cue_matrix(
         data_val,
         cue_obj_combined,
-        grams = grams,
-        target_col = target_col,
-        tokenized = tokenized,
-        sep_token = sep_token,
-        keep_sep = keep_sep,
-        start_end_token = start_end_token,
-        verbose = verbose,
+        grams=grams,
+        target_col=target_col,
+        tokenized=tokenized,
+        sep_token=sep_token,
+        keep_sep=keep_sep,
+        start_end_token=start_end_token,
+        verbose=verbose,
     )
 
     cue_obj_train, cue_obj_val
@@ -469,8 +469,10 @@ function make_ngrams(
     sep_token,
     start_end_token,
 )
+    if !start_end_token == None
+        push!(pushfirst!(tokens, start_end_token), start_end_token)
+    end
 
-    push!(pushfirst!(tokens, start_end_token), start_end_token)
     if keep_sep
         # collect ngrams
         ngrams =
